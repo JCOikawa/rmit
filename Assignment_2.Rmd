@@ -1,0 +1,131 @@
+---
+title: "Assignment 2"
+author: "Jiacong Zheng(S3913565)"
+subtitle: Deconstruct, Reconstruct Web Report
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+# Do not change these settings!
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+### Assessment declaration checklist
+
+Please carefully read the statements below and check each box if you agree with the declaration. If you do not check all boxes, your assignment will not be marked. If you make a false declaration on any of these points, you may be investigated for academic misconduct. Students found to have breached academic integrity may receive official warnings and/or serious academic penalties. Please read more about academic integrity [here](https://www.rmit.edu.au/students/student-essentials/assessment-and-exams/academic-integrity). If you are unsure about any of these points or feel your assessment might breach academic integrity, please contact your course coordinator for support. It is important that you DO NOT submit any assessment until you can complete the declaration truthfully. 
+
+**By checking the boxes below, I declare the following:**
+
+- <input type="checkbox" id="dec1" name="dec1" value="Agree"> I have not impersonated, or allowed myself to be impersonated by, any person for the purposes of this assessment 
+
+- <input type="checkbox" id="dec2" name="dec2" value="Agree"> This assessment is my original work and no part of it has been copied from any other source except where due acknowledgement is made. Due acknowledgement means the following:
+  * The source is correctly referenced in a reference list
+  * The work has been paraphrased or directly quoted
+  * A citation to the original work’s reference has been included where the copied work appears in the assessment. 
+
+
+- <input type="checkbox" id="dec3" name="dec3" value="Agree"> No part of this assessment has been written for me by any other person except where such collaboration has been authorised by the lecturer/teacher concerned.
+
+- <input type="checkbox" id="dec4" name="dec4" value="Agree"> I have not used generative “AI” tools for the purposes of this assessment. 
+
+- <input type="checkbox" id="dec5" name="dec5" value="Agree"> Where this work is being submitted for individual assessment, I declare that it is my original work and that no part has been contributed by, produced by or in conjunction with another student.
+
+- <input type="checkbox" id="dec6" name="dec6" value="Agree"> I give permission for my assessment response to be reproduced, communicated, compared and archived for the purposes of detecting plagiarism.
+
+- <input type="checkbox" id="dec7" name="dec7" value="Agree"> I give permission for a copy of my assessment to be retained by the university for review and comparison, including review by external examiners.
+
+**I understand that:**
+
+- <input type="checkbox" id="dec7" name="dec8" value="Agree"> Plagiarism is the presentation of the work, idea or creation of another person or machine as though it is your own. It is a form of cheating and is a very serious academic offence that may lead to exclusion from the University. Plagiarised material can be drawn from, and presented in, written, graphic and visual form, including electronic data and oral presentations. Plagiarism occurs when the origin of the material used is not appropriately cited.
+
+- <input type="checkbox" id="dec8" name="dec9" value="Agree"> Plagiarism includes the act of assisting or allowing another person to plagiarise or to copy my work.
+
+**I agree and acknowledge that:**
+
+- <input type="checkbox" id="dec9" name="dec10" value="Agree"> I have read and understood the Declaration and Statement of Authorship above.
+
+- <input type="checkbox" id="dec10" name="dec11" value="Agree"> If I do not agree to the Declaration and Statement of Authorship in this context and all boxes are not checked, the assessment outcome is not valid for assessment purposes and will not be included in my final result for this course.
+
+
+## Deconstruct
+
+### Original
+
+The original data visualisation selected for the assignment was as follows:
+
+<br>
+<center>
+<img src="dv.png" width="80%">
+</center>
+<center>*Source: Zena Chamas(2025).*</center>
+<br>
+
+
+### Objective and Audience
+
+The objective and audience of the original data visualisation chosen can be summarised as follows: 
+
+**Objective**
+To show that more Australians are voting early than in previous elections.
+
+**Audience**
+People who concern about the Federal Election voting this year. They could be the citizens and the politicians.
+
+### Improvements
+
+The original data visualisation chosen could be improved in the three following ways:
+
+* They included the 'TOTAL' into the pie chart which has no sense having it, it wasted half of the pie charts. So I would improve it by removing 'TOTAL' in the chart.
+* Pie chart is bad for comparison of the votings between states. So I would change it to bar chart.
+* The audiences would find hard to compare the votings between 2022 and 2025 among the 2 pie charts. So I would improve it by making them to one single side-by-side bar chart
+
+## Reconstruct
+
+### Code
+
+The following code was used to improve the original. 
+
+```{r}
+library(ggplot2)
+library(tidyr) 
+
+raw_data <- read.csv("data.csv")
+# Remove Total 
+filtered_data <- raw_data[raw_data$STATE != "TOTAL", ]
+
+data_long <- pivot_longer(filtered_data, cols = -STATE, names_to = "YEAR", values_to = "VOTES")
+
+
+p <- ggplot(data_long, mapping = aes(x= STATE ,y=VOTES, fill=YEAR))
+
+p <- p + geom_bar(stat = "identity", position = "dodge") + 
+  labs(title = 'Pre-poll voting figures of Federal election \n for the same time at the 2022 and 2025') + 
+  theme_bw() +
+  theme(plot.title = element_text(
+    face = "bold",
+    size = 16,
+    hjust = 0.5
+  ))
+    
+
+
+```
+
+
+### Reconstruction
+
+The following plot improves the original data visualisation in the three ways previously explained.
+
+```{r fig.align="center", echo = FALSE}
+p
+```
+
+## References
+
+The reference to the original data visualisation choose, the data source(s) used for the reconstruction and any other sources used for this assignment are as follows:
+
+* Zena Chamas(2025). *More Australians are voting early than in previous elections. Some parties have taken advantage*. Retrieved May 03, 2025, from ABC News website: https://www.abc.net.au/news/2025-04-30/how-many-people-have-voted-already-prepoll-numbers-fe2025/105227960
